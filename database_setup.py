@@ -18,7 +18,7 @@ class Book(Base):
 
     title = Column(String(120), nullable=False)
     id = Column(Integer, primary_key=True)
-    description = Column(String(1000))
+    description = Column(String(2000))
     category = relationship(Category)
     category_id = Column(Integer, ForeignKey('category.id'))
 
