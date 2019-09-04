@@ -4,54 +4,54 @@ from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Book
 
 # Starting session
-engine = create_engine('sqlite:///restaurantmenu.db')
+engine = create_engine('sqlite:///bookstorecatalog.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # Creating Categories
 
-arts = Category("Arts & Photography")
+arts = Category(name="Arts & Photography")
 session.add(arts)
 session.commit()
 
-biographies = Category("Biographies & Memoirs")
+biographies = Category(name="Biographies & Memoirs")
 session.add(biographies)
 session.commit()
 
-business = Category("Business & Investing")
+business = Category(name="Business & Investing")
 session.add(business)
 session.commit()
 
-children = Category("Children's Books")
-session.add()
+children = Category(name="Children's Books")
+session.add(children)
 session.commit()
 
-cookbook = Category("Cookbook, Food & Wine")
+cookbook = Category(name="Cookbook, Food & Wine")
 session.add(cookbook)
 session.commit()
 
-history = Category("History")
+history = Category(name="History")
 session.add(history)
 session.commit()
 
-literature = Category("Literature & Fiction")
+literature = Category(name="Literature & Fiction")
 session.add(literature)
 session.commit()
 
-mystery = Category("Mistery & Suspense")
+mystery = Category(name="Mistery & Suspense")
 session.add(mystery)
 session.commit()
 
-romance = Category("Romance")
+romance = Category(name="Romance")
 session.add(romance)
 session.commit()
 
-scifi = Category("Sci-Fi & Fantasy")
+scifi = Category(name="Sci-Fi & Fantasy")
 session.add(scifi)
 session.commit()
 
-teens = Category("Teens & Young Adult")
+teens = Category(name="Teens & Young Adult")
 session.add(teens)
 session.commit()
 
@@ -70,7 +70,7 @@ session.commit()
 
 love5 = Book(
     title="The 5 Love Languages: The Secret to Love that Lasts",
-    description="In the #1 New York Times bestseller The 5 Love Languages, you’ll discover the secret that has "
+    description="In the #1 New York Times bestseller The 5 Love Languages, you'll discover the secret that has "
                 "transformed millions of relationships worldwide. Whether your relationship is flourishing or "
                 "failing Dr. Gary Chapman's proven approach to showing and receiving love will help you experience"
                 " deeper and richer levels of intimacy with your partner-starting today.",
@@ -347,8 +347,8 @@ session.commit()
 
 skye = Book(
     title="Skye",
-    description="Skye Parker is the only daughter of the Sun God and his Moon. She is also a woman of many talents… "
-                "A Princess, an Heir, a designer, and a beautiful woman who is confident in who she is…and has no "
+    description="Skye Parker is the only daughter of the Sun God and his Moon. She is also a woman of many talents... "
+                "A Princess, an Heir, a designer, and a beautiful woman who is confident in who she is...and has no "
                 "problem going after what she wants.",
     category=mystery)
 session.add(skye)
@@ -412,7 +412,7 @@ session.commit()
 
 theVine = Book(
     title="The Vine Witch",
-    description="For centuries, the vineyards at Château Renard have depended on the talent of their vine witches, "
+    description="For centuries, the vineyards at Chateau Renard have depended on the talent of their vine witches, "
                 "whose spells help create the world-enowned wine of the Chanceaux Valley. Then the skill of divining"
                 " harvests fell into ruin when sorciere Elena Boureanu was blindsided by a curse. Now, after breaking "
                 "the spell that confined her to the shallows of a marshland and weakened her magic, Elena is struggling"

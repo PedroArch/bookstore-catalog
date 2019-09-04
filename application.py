@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, url_for
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Book
@@ -14,24 +14,43 @@ session = DBSession()
 
 # URL routing
 @app.route("/")
-@app.route("/catalog")
+@app.route("/catalog", methods=["GET"])
 def catalog():
-    return "Catalog main page."
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+
+    categories = session.query(Category).all()
+    books = session.query(Book).all()
+    latestbooks = books[-11:]
+    return render_template("catalog.html", categories=categories, books=latestbooks)
 
 
 @app.route("/catalog/<int:category_id>/items")
 def category(category_id):
-    return "%s books category" % category.name
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+
+    category = session.query(Category).filter_by(id=category_id).one()
+    books = session.query(Book).filter_by(category_id=category_id).all()
+    categories = session.query(Category).all()
+    return render_template("category.html", category = category, books = books, categories = categories)
 
 
 @app.route("/catalog/<int:category_id>/<int:book_id>")
 def book(category_id, book_id):
-    return "%s description page" % book.name
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    category = session.query(Category).filter_by(id=category_id).one()
+    book = session.query(Book).filter_by(id=book_id).one()
+    return render_template("book.html", book = book, category=category)
 
 # CRUD Routing
-@app.route("/catalog/new")
+@app.route("/catalog/new", methods=["GET", "POST"])
 def newBook():
-    return "New book page"
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    categories = session.query(Category).all()
+    return render_template("new.html", categories = categories)
 
 
 @app.route("/catalog/<int:category_id>/<int:book_id>/edit")
