@@ -1,0 +1,22 @@
+{% extends "base.html "%}
+
+{% block content %}
+<div class="main_container_new">
+  <h1 class="title_newbook">New Book</h1>
+  <div class="newbook_container">
+    <form class="newbook_form" method="POST" action="/catalog/new">
+      <span>Title</span></br>
+      <input name="title" type="text" size="100"></br></br>
+      <span>Description</span></br>
+      <textarea name="description" type="text" cols="91" rows="10"></textarea></br></br>
+      <span>Category</span></br>
+      <select name="category">
+        {% for category in categories %}
+          <option value="{{category.name}}">{{category.name}}</option>
+        {% endfor %}
+      </select></br></br>
+      <input type="submit">
+    </form>
+  </div>
+</div>
+{% endblock %}

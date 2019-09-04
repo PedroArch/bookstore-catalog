@@ -1,0 +1,167 @@
+.header {
+  color: orange;
+  background-color: #155877;
+  text-align:left;
+  height: 100px;
+  margin: 0;
+  font-size: 50px;
+}
+
+.header_title {
+  margin: 0;
+  margin-left: 10px;
+  float: left;
+}
+
+.catbook {
+  font-style: italic;
+  color: #9ca19d;
+  font-size: 20px;
+}
+
+.url_cat, .url_book {
+  text-decoration: none;
+  color: orange;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+body {
+  font-family: sans-serif, Arial Black;
+  background-color: #ede6d1;
+  margin: 0;
+}
+
+.categories_list, .books_list {
+  list-style: none;
+  padding: 0;
+}
+
+.left_container {
+  width: 40%;
+  background-color: #FFFFFF;
+  padding: 5px;
+  position: relative;
+  float: left;
+  height: 100%;
+  padding-left: 20px;
+
+}
+
+.right_container {
+  width: 55%;
+  background-color: #FFFFFF;
+  padding: 5px;
+  position: relative;
+  float: left;
+  height: 100%;
+  border-left: none;
+}
+
+.titles_main {
+  font-size: 40px;
+  margin: 10px;
+  margin-left: 0;
+  color: #1f376b;
+  font-weight: bold;
+}
+
+.main_container {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 460px;
+  width: 70%;
+  position: absolute;
+  background-color: #FFFFFF;
+  margin-left: 20%;
+  margin-top: 10%;
+}
+
+.header_title {
+  margin-left: 20%;
+  width: 50%;
+}
+
+.left_container, .right_container {
+  padding-bottom: 0;
+  padding-top: 0;
+  margin: 0;
+}
+
+.categories_menu, .latest_menu {
+  margin: 3px;
+}
+
+.login_btn {
+  text-decoration: none;
+  width: 100px;
+  height: 25px;
+  color: white;
+  background-color: orange;
+  font-size: 20px;
+  padding: 10px;
+  position: relative;
+  float: right;
+  margin: 20px;
+  text-align: center;
+  margin-top: 40px;
+  margin-right: 10%;
+
+}
+
+.header {
+  position: absolute;
+  width: 100%;
+}
+
+.books_list_inside{
+  padding: `0;
+  padding-left: 15px;
+}
+
+.book_title {
+  color: #195aa8;
+  text-align: center;
+}
+
+.description {
+  margin: 25px;
+}
+
+.main_container_description {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 250px;
+  width: 70%;
+  position: absolute;
+  background-color: #FFFFFF;
+  margin-left: 20%;
+  margin-top: 10%;
+}
+
+.becastore {
+  text-decoration: none;
+  color: orange;
+}
+
+.link_add {
+  color: orange;
+  float:right;
+}
+
+.main_container_new {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 600px;
+  width: 70%;
+  position: absolute;
+  background-color: #FFFFFF;
+  margin-left: 20%;
+  margin-top: 10%;
+}
+
+.newbook_container{
+  margin-left: 15px;
+}
+
+.title_newbook {
+  margin-left: 15px;
+  color: #1f376b;
+}
