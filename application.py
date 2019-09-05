@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, redirect, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Book
@@ -22,6 +22,7 @@ def catalog():
     categories = session.query(Category).all()
     books = session.query(Book).all()
     latestbooks = books[-11:]
+    latestbooks.reverse()
     return render_template("catalog.html", categories=categories, books=latestbooks)
 
 
@@ -50,22 +51,42 @@ def newBook():
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
     categories = session.query(Category).all()
-    return render_template("new.html", categories = categories)
+    if request.method == "POST":
+        category = session.query(Category).filter_by(name=request.form["category"]).one()
+        newBook = Book(
+        title=request.form["title"],
+        category=category,
+        description=request.form["description"])
+        session.add(newBook)
+        session.commit()
+        return redirect(url_for('catalog'))
+    return render_template("new.html", categories=categories)
 
 
-@app.route("/catalog/<int:category_id>/<int:book_id>/edit")
-def editBook(book_id):
-    return "%s edit page" % editedbook.name
+@app.route("/catalog/<int:category_id>/<int:book_id>/edit", methods=["GET", "POST"])
+def editBook(book_id, category_id):
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    editedbook = session.query(Book).filter_by(id=book_id).one()
+    if request.method == "POST":
+        editedbook.title = request.form['newtitle']
+        session.add(editedbook)
+        session.commit()
+        return redirect(url_for('catalog'))
+    return render_template("edit.html", book = editedbook, category=category_id)
 
 
-@app.route("/catalog/<int:category_id>/<int:book_id>/delete")
-def deleteBook(book_id):
-    return "% delete page" % deletedbook.name
+@app.route("/catalog/<int:category_id>/<int:book_id>/delete", methods=["GET", "POST"])
+def deleteBook(book_id, category_id):
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    deletedbook = session.query(Book).filter_by(id=book_id).one()
+    if request.method == "POST":
+        session.delete(deletedbook)
+        session.commit()
+        return redirect(url_for('catalog'))
+    return render_template("delete.html", book = deletedbook)
 
-# Not Found Page
-@app.route("/catalog/notfound")
-def notFound():
-    return "Not Found Page"
 
 # End of File
 if __name__ == "__main__":
