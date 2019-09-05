@@ -1,0 +1,12 @@
+{% extends "base.html "%}
+
+{% block content %}
+<div class="main_container_edit">
+  <h1 class="newtitle_title">Do you really wanto to delete {{book.title}}?</h1>
+  <div class="newbook_container">
+    <form class="deltebook_form" method="POST" action="{{url_for('deleteBook', category_id=book.category.id, book_id=book.id)}}">
+      <input type="submit" value="DELETE">
+    </form>
+  </div>
+</div>
+{% endblock %}
