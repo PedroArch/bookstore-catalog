@@ -161,7 +161,38 @@ body {
   margin-left: 15px;
 }
 
-.title_newbook {
+.title_newbook, .newtitle_title {
   margin-left: 15px;
   color: #1f376b;
+}
+
+.newbook_container{
+  margin-left: 15px;
+}
+
+.main_container_edit {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 450px;
+  width: 70%;
+  position: absolute;
+  background-color: #FFFFFF;
+  margin-left: 20%;
+  margin-top: 10%;
+}
+
+.edit_book_btn, .delete_book_btn{
+  color:orange;
+  float: right;
+  position: relative;
+  margin-right: 10px;
+}
+
+.main_container_edit {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 200px;
+  width: 70%;
+  position: absolute;
+  background-color: #FFFFFF;
+  margin-left: 20%;
+  margin-top: 10%;
 }
