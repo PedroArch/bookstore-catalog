@@ -8,7 +8,7 @@
   <body>
     <div class='header'>
       <h1 class='header_title'><a class="becastore" href="{{url_for('catalog', categories = categories, books = books)}}">BecaStore<a></h1>
-      <a href="#" class="login_btn">Login</a>
+      <a href="{{url_for('showLogin')}}" class="login_btn">Login</a>
     </div>
     {% block content %}
 
