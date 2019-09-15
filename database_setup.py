@@ -12,6 +12,13 @@ class Category(Base):
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
 
+    @property
+    def serialize(self):
+        return {
+            'name': self.name,
+            'id': self.id,
+        }
+
 # Book table
 class Book(Base):
     __tablename__ = "book"
@@ -21,6 +28,14 @@ class Book(Base):
     description = Column(String(2000))
     category = relationship(Category)
     category_id = Column(Integer, ForeignKey('category.id'))
+
+    @property
+    def serialize(self):
+        return {
+            'title': self.title,
+            'description': self.description,
+            'category': self.category.name,
+        }
 
 
 # End of File
