@@ -4,7 +4,9 @@
 <div class="main_container_description">
   <h1 class="book_title">{{book.title}}</h1>
   <div class="description">{{book.description}}</div>
-  <a class="edit_book_btn" href="{{url_for('editBook', book_id = book.id, category_id = book.category_id )}}">Edit</a></li></br>
-  <a class="delete_book_btn" href="{{url_for('deleteBook', book_id = book.id, category_id = book.category_id )}}">Delete</a></li>
+  {% if 'username' in session %}
+    <a class="edit_book_btn" href="{{url_for('editBook', book_id = book.id, category_id = book.category_id )}}">Edit</a></li></br>
+    <a class="delete_book_btn" href="{{url_for('deleteBook', book_id = book.id, category_id = book.category_id )}}">Delete</a></li>
+  {% endif %}
 </div>
 {% endblock %}

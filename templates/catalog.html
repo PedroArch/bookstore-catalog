@@ -20,7 +20,9 @@
     </ul>
   </div>
   <div class="right_container">
-    <a class="link_add" href="/catalog/new">Add new book</a>
+    {% if 'username' in session %}
+      <a class="link_add" href="/catalog/new">Add new book</a>
+    {% endif %}
     <h2 class="titles_main"> Latest Books</h2>
     <ul class="books_list">
     {% for book in books %}
