@@ -1,4 +1,5 @@
-from flask import Flask, render_template, url_for, redirect, request, jsonify, flash
+from flask import Flask, render_template, url_for, redirect
+from flask import request, jsonify, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Book
@@ -30,7 +31,8 @@ CLIENT_ID = json.loads(
 # Store it in the session for later validation
 @app.route("/login")
 def showLogin():
-    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in range(32))
     login_session['state'] = state
     return render_template("login.html", STATE=state)
 
@@ -88,7 +90,7 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
+        response = make_response(json.dumps('User is already connected.'),
                                  200)
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -114,10 +116,13 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px;'
+    output += 'border-radius: 150px;'
+    output += '-webkit-border-radius: 150px;-moz-border-radius: 150px;">'
     flash("You are now logged in as %s" % login_session['username'])
     print "done!"
     return output
+
 
 # Disconnect Google User
 @app.route('/gdisconnect')
@@ -125,10 +130,11 @@ def gdisconnect():
     access_token = login_session.get('access_token')
     if access_token is None:
         print 'Access Token is None'
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(json.dumps('User not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s'\
+          % login_session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
@@ -141,7 +147,7 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps('Failed to revoke token.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -156,7 +162,9 @@ def catalog():
     books = session.query(Book).all()
     latestbooks = books[-11:]
     latestbooks.reverse()
-    return render_template("catalog.html", categories=categories, books=latestbooks)
+    return render_template("catalog.html",
+                           categories=categories,
+                           books=latestbooks)
 
 
 @app.route("/catalog/<int:category_id>/items")
@@ -167,7 +175,10 @@ def category(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     books = session.query(Book).filter_by(category_id=category_id).all()
     categories = session.query(Category).all()
-    return render_template("category.html", category = category, books = books, categories = categories)
+    return render_template("category.html",
+                           category=category,
+                           books=books,
+                           categories=categories)
 
 
 @app.route("/catalog/<int:category_id>/<int:book_id>")
@@ -176,7 +187,7 @@ def book(category_id, book_id):
     session = DBSession()
     category = session.query(Category).filter_by(id=category_id).one()
     book = session.query(Book).filter_by(id=book_id).one()
-    return render_template("book.html", book = book, category=category)
+    return render_template("book.html", book=book, category=category)
 
 # CRUD Routing
 @app.route("/catalog/new", methods=["GET", "POST"])
@@ -185,11 +196,11 @@ def newBook():
     session = DBSession()
     categories = session.query(Category).all()
     if request.method == "POST":
-        category = session.query(Category).filter_by(name=request.form["category"]).one()
-        newBook = Book(
-        title=request.form["title"],
-        category=category,
-        description=request.form["description"])
+        category = session.query(Category).filter_by(
+            name=request.form["category"]).one()
+        newBook = Book(title=request.form["title"],
+                       category=category,
+                       description=request.form["description"])
         session.add(newBook)
         session.commit()
         flash("New Book Created.")
@@ -197,7 +208,8 @@ def newBook():
     return render_template("new.html", categories=categories)
 
 
-@app.route("/catalog/<int:category_id>/<int:book_id>/edit", methods=["GET", "POST"])
+@app.route("/catalog/<int:category_id>/<int:book_id>/edit",
+           methods=["GET", "POST"])
 def editBook(book_id, category_id):
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
@@ -208,10 +220,13 @@ def editBook(book_id, category_id):
         session.commit()
         flash("Book has been edited.")
         return redirect(url_for('catalog'))
-    return render_template("edit.html", book = editedbook, category=category_id)
+    return render_template("edit.html",
+                           book=editedbook,
+                           category=category_id)
 
 
-@app.route("/catalog/<int:category_id>/<int:book_id>/delete", methods=["GET", "POST"])
+@app.route("/catalog/<int:category_id>/<int:book_id>/delete",
+           methods=["GET", "POST"])
 def deleteBook(book_id, category_id):
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
@@ -221,10 +236,10 @@ def deleteBook(book_id, category_id):
         session.commit()
         flash("Book has been deleted")
         return redirect(url_for('catalog'))
-    return render_template("delete.html", book = deletedbook)
+    return render_template("delete.html", book=deletedbook)
+
 
 # API endpoits
-
 @app.route("/catalog/categories/JSON")
 def categoriesJSON():
     DBSession = sessionmaker(bind=engine)
@@ -232,12 +247,14 @@ def categoriesJSON():
     categories = session.query(Category).all()
     return jsonify(Categories=[category.serialize for category in categories])
 
+
 @app.route("/catalog/books/JSON")
 def booksJSON():
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
     books = session.query(Book).all()
     return jsonify(Books=[book.serialize for book in books])
+
 
 # End of File
 if __name__ == "__main__":
