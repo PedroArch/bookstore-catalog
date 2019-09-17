@@ -27,6 +27,7 @@ session = DBSession()
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 
+
 # Create a state token to prevent requery forgery.
 # Store it in the session for later validation
 @app.route("/login")
@@ -35,6 +36,7 @@ def showLogin():
                     for x in range(32))
     login_session['state'] = state
     return render_template("login.html", STATE=state)
+
 
 # Google Logout
 @app.route('/gconnect', methods=['POST'])
@@ -151,6 +153,7 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
+
 # URL routing
 @app.route("/")
 @app.route("/catalog", methods=["GET"])
@@ -189,54 +192,64 @@ def book(category_id, book_id):
     book = session.query(Book).filter_by(id=book_id).one()
     return render_template("book.html", book=book, category=category)
 
+
 # CRUD Routing
 @app.route("/catalog/new", methods=["GET", "POST"])
 def newBook():
-    DBSession = sessionmaker(bind=engine)
-    session = DBSession()
-    categories = session.query(Category).all()
-    if request.method == "POST":
-        category = session.query(Category).filter_by(
-            name=request.form["category"]).one()
-        newBook = Book(title=request.form["title"],
-                       category=category,
-                       description=request.form["description"])
-        session.add(newBook)
-        session.commit()
-        flash("New Book Created.")
-        return redirect(url_for('catalog'))
-    return render_template("new.html", categories=categories)
+    if 'username' not in login_session:
+        return redirect('/login')
+    else:
+        DBSession = sessionmaker(bind=engine)
+        session = DBSession()
+        categories = session.query(Category).all()
+        if request.method == "POST":
+            category = session.query(Category).filter_by(
+                name=request.form["category"]).one()
+            newBook = Book(title=request.form["title"],
+                           category=category,
+                           description=request.form["description"])
+            session.add(newBook)
+            session.commit()
+            flash("New Book Created.")
+            return redirect(url_for('catalog'))
+        return render_template("new.html", categories=categories)
 
 
 @app.route("/catalog/<int:category_id>/<int:book_id>/edit",
            methods=["GET", "POST"])
 def editBook(book_id, category_id):
-    DBSession = sessionmaker(bind=engine)
-    session = DBSession()
-    editedbook = session.query(Book).filter_by(id=book_id).one()
-    if request.method == "POST":
-        editedbook.title = request.form['newtitle']
-        session.add(editedbook)
-        session.commit()
-        flash("Book has been edited.")
-        return redirect(url_for('catalog'))
-    return render_template("edit.html",
-                           book=editedbook,
-                           category=category_id)
+    if 'username' not in login_session:
+        return redirect('/login')
+    else:
+        DBSession = sessionmaker(bind=engine)
+        session = DBSession()
+        editedbook = session.query(Book).filter_by(id=book_id).one()
+        if request.method == "POST":
+            editedbook.title = request.form['newtitle']
+            session.add(editedbook)
+            session.commit()
+            flash("Book has been edited.")
+            return redirect(url_for('catalog'))
+        return render_template("edit.html",
+                               book=editedbook,
+                               category=category_id)
 
 
 @app.route("/catalog/<int:category_id>/<int:book_id>/delete",
            methods=["GET", "POST"])
 def deleteBook(book_id, category_id):
-    DBSession = sessionmaker(bind=engine)
-    session = DBSession()
-    deletedbook = session.query(Book).filter_by(id=book_id).one()
-    if request.method == "POST":
-        session.delete(deletedbook)
-        session.commit()
-        flash("Book has been deleted")
-        return redirect(url_for('catalog'))
-    return render_template("delete.html", book=deletedbook)
+    if 'username' not in login_session:
+        return redirect('/login')
+    else:
+        DBSession = sessionmaker(bind=engine)
+        session = DBSession()
+        deletedbook = session.query(Book).filter_by(id=book_id).one()
+        if request.method == "POST":
+            session.delete(deletedbook)
+            session.commit()
+            flash("Book has been deleted")
+            return redirect(url_for('catalog'))
+        return render_template("delete.html", book=deletedbook)
 
 
 # API endpoits
@@ -254,6 +267,14 @@ def booksJSON():
     session = DBSession()
     books = session.query(Book).all()
     return jsonify(Books=[book.serialize for book in books])
+
+
+@app.route("/catalog/<int:book_id>/JSON")
+def bookJSON(book_id):
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    bookItems = session.query(Book).filter_by(id=book_id)
+    return jsonify(Book=[item.serialize for item in bookItems])
 
 
 # End of File

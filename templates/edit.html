@@ -6,7 +6,7 @@
   <div class="newbook_container">
     <form class="newbook_form" method="POST" action="{{url_for('editBook', category_id=book.category.id, book_id=book.id)}}">
       <span>New Title</span></br>
-      <input name="newtitle" type="text" size="100" placeholder="{{book.title}}"></br></br>
+      <input name="newtitle" type="text" size="100" required minlength="1" placeholder="{{book.title}}"></br></br>
       <input type="submit" value="Edit">
     </form>
   </div>

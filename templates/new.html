@@ -6,9 +6,9 @@
   <div class="newbook_container">
     <form class="newbook_form" method="POST" action="/catalog/new">
       <span>Title</span></br>
-      <input name="title" type="text" size="100"></br></br>
+      <input name="title" type="text" required minlength="3" size="100"></br></br>
       <span>Description</span></br>
-      <textarea name="description" type="text" cols="91" rows="10"></textarea></br></br>
+      <textarea name="description" type="text" required minlength="15" cols="91" rows="10"></textarea></br></br>
       <span>Category</span></br>
       <select name="category">
         {% for category in categories %}
